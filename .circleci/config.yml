@@ -203,50 +203,56 @@ jobs:
       - run: git push --delete https://$REPO_GITHUB_TOKEN@github.com/graknlabs/client-python $CIRCLE_BRANCH
 
 workflows:
-  client-python:
+  test:
     jobs:
-      - build:
-          filters:
-            branches:
-              ignore: client-python-release-branch
-      - test-concept:
-          filters:
-            branches:
-              ignore: client-python-release-branch
-      - test-grakn:
-          filters:
-            branches:
-              ignore: client-python-release-branch
-      - test-keyspace:
-          filters:
-            branches:
-              ignore: client-python-release-branch
-      - test-answer:
-          filters:
-            branches:
-              ignore: client-python-release-branch
-      - deploy-pip-snapshot:
-          filters:
-            branches:
-              only: master
-          requires:
-            - build
-            - test-concept
-            - test-grakn
-            - test-keyspace
-            - test-answer
+      - deploy-pip-snapshot
       - test-deployment:
-          filters:
-            branches:
-              only: master
           requires:
             - deploy-pip-snapshot
-      - release-approval:
-          filters:
-            branches:
-              only: master
-          requires:
-            - test-deployment
+  # client-python:
+  #   jobs:
+  #     - build:
+  #         filters:
+  #           branches:
+  #             ignore: client-python-release-branch
+  #     - test-concept:
+  #         filters:
+  #           branches:
+  #             ignore: client-python-release-branch
+  #     - test-grakn:
+  #         filters:
+  #           branches:
+  #             ignore: client-python-release-branch
+  #     - test-keyspace:
+  #         filters:
+  #           branches:
+  #             ignore: client-python-release-branch
+  #     - test-answer:
+  #         filters:
+  #           branches:
+  #             ignore: client-python-release-branch
+  #     - deploy-pip-snapshot:
+  #         filters:
+  #           branches:
+  #             only: master
+  #         requires:
+  #           - build
+  #           - test-concept
+  #           - test-grakn
+  #           - test-keyspace
+  #           - test-answer
+  #     - test-deployment:
+  #         filters:
+  #           branches:
+  #             only: master
+  #         requires:
+  #           - deploy-pip-snapshot
+  #     - release-approval:
+  #         filters:
+  #           branches:
+  #             only: master
+  #         requires:
+  #           - test-deployment
 
   client-python-release:
     jobs:
